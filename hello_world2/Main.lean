@@ -1,6 +1,3 @@
-def main : IO Unit :=
-  IO.println s!"Hello, {hello}!"
-
 #eval 1 + 2
 
 #eval 1 + 2 * 5
