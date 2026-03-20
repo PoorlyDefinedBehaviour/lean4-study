@@ -79,4 +79,24 @@ theorem count_from_num3 (n : Nat) : List.length (count_from n) = n := by
   induction n <;> simp [count_from, *]
 
 theorem reverse_twice_is_id (xs : List α) : List.reverse (List.reverse xs) = xs := by
-  sorry
+  induction xs with
+  | nil => rfl
+  | cons x xs ih =>
+    simp [ih]
+
+def tail_reverseHelper {α : Type} (soFar : List α) : List α → List α
+  | [] => soFar
+  | x :: xs => tail_reverseHelper (x :: soFar) xs
+
+theorem non_tail_reverse_eq_helper_accum {α : Type} (xs : List α) :
+  (soFar : List α) -> tail_reverseHelper soFar xs = (List.reverse xs) ++ soFar := by
+  induction xs with
+  | nil => simp [tail_reverseHelper, List.reverse]
+  | cons y ys ih =>
+  intro soFar
+  simp [List.reverse]
+  exact ih (y :: soFar)
+
+theorem non_tail_reverse_eq_tail_reverse : @reverse = @tail_reverse := by
+  funext α xs
+  simp [tail_reverse, non_tail_reverse_eq_helper_accum]
